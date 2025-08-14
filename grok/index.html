@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carômetro Escolar Interativo (CEI)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .form-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #ocorrencias {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .ocorrencia-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .ocorrencia-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Carômetro Escolar Interativo (CEI)</h1>
+  <div class="form-container">
+    <div class="form-group">
+      <label for="aluno">Aluno:</label>
+      <select id="aluno">
+        <option value="">Selecione um aluno</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="ocorrencia">Ocorrência:</label>
+      <select id="ocorrencia">
+        <option value="uniforme">Uniforme</option>
+        <option value="comportamento">Comportamento</option>
+        <option value="atraso">Atraso</option>
+        <option value="dormiu">Dormiu</option>
+        <option value="celular">Celular</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="data">Data:</label>
+      <input type="date" id="data" value="2025-08-14">
+    </div>
+    <button onclick="adicionarOcorrencia()">Registrar Ocorrência</button>
+  </div>
+  <div id="ocorrencias">
+    <h2>Ocorrências Registradas</h2>
+  </div>
+
+  <script>
+    // Simulação de dados (substituir por chamadas ao MySQL depois)
+    const alunos = [
+      "Aluanan Angel de Sousa", "Ana Carolina de Oliveira Monteiro", "Anna Vitória Martins Ramos",
+      "Arthur Cintra de Lacerda", "Arthur Cintra Faleiros", "Arthur Marques Santos",
+      "Bryan Miguel Moreira", "Davi Azevedo Gonçalves", "Eduardo Augusto Tognati",
+      "Flavio Henrique de Souza Filho", "Gabriel Braz Menezes", "Gabriel Rossi Ventura",
+      "Guilherme Bazon Garcia Neves", "João Victor Oliveira Silva", "José Victor Faccirolli",
+      "Kauan Borges Plaza", "Kauan Henrique Mello Silva", "Keliyah Cristine de Oliveira Martins",
+      "Leonardo Alves da Silva", "Luís Pedro França Paulino", "Luiz Felipe Campos Margato",
+      "Maria Vitória Sampaio de Sousa", "Pedro Galindo Tavares", "Rafael Caires dos Santos",
+      "Rafael Mendes Neves", "Renan Vieira Mobrise", "Sofia Siqueira Belchior",
+      "Sophia de Oliveira Ferreira", "Ulisses Santini Gomes", "Vinícius Soares Peroni"
+    ];
+
+    let ocorrencias = [
+      { aluno: "Guilherme Bazon Garcia Neves", ocorrencia: "celular", data: "2025-08-14" }
+    ];
+
+    // Preencher o select de alunos
+    const alunoSelect = document.getElementById('aluno');
+    alunos.forEach(aluno => {
+      const option = document.createElement('option');
+      option.value = aluno;
+      option.textContent = aluno;
+      alunoSelect.appendChild(option);
+    });
+
+    // Adicionar ocorrência
+    function adicionarOcorrencia() {
+      const aluno = document.getElementById('aluno').value;
+      const ocorrencia = document.getElementById('ocorrencia').value;
+      const data = document.getElementById('data').value;
+
+      if (aluno && ocorrencia && data) {
+        const novaOcorrencia = { aluno, ocorrencia, data };
+        ocorrencias.push(novaOcorrencia);
+        atualizarLista();
+        limparFormulario();
+      } else {
+        alert('Selecione um aluno e verifique a data!');
+      }
+    }
+
+    // Atualizar lista de ocorrências
+    function atualizarLista() {
+      const lista = document.getElementById('ocorrencias');
+      lista.innerHTML = '<h2>Ocorrências Registradas</h2>';
+      if (ocorrencias.length === 0) {
+        lista.innerHTML += '<p>Nenhuma ocorrência registrada.</p>';
+      } else {
+        ocorrencias.forEach(oc => {
+          const item = document.createElement('div');
+          item.className = 'ocorrencia-item';
+          item.textContent = `${oc.aluno} - ${oc.ocorrencia} - ${oc.data}`;
+          lista.appendChild(item);
+        });
+      }
+    }
+
+    // Limpar formulário
+    function limparFormulario() {
+      document.getElementById('aluno').value = '';
+      document.getElementById('ocorrencia').value = 'uniforme';
+      document.getElementById('data').value = '2025-08-14';
+    }
+
+    // Carregar lista inicial
+    atualizarLista();
+  </script>
+</body>
+</html>
